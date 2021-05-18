@@ -7,21 +7,29 @@
          )
 */
 
-exports.leerTareas = function () {
-    /*
-        En esta función debes leer y retornar las tareas registradas.
-    */
+const fs = require("fs");
+
+let leerTareas = function () {
+    let texto = fs.readFileSync("./tareas.json");
+    return JSON.parse(texto);
 }
 
-exports.agregarTarea = function (tarea) {
-    /*
-        Registra y guarda una nueva tarea.
-    */
+
+let agregarTarea = function (tarea) {
+    let tareas = leerTareas();
+    tareas.push(tarea);
+    let formato = JSON.stringify(tareas);
+    fs.writeFileSync("./tareas.json", formato);
 }
 
-exports.filtrarTareasPorEstado = function (estado) {
-    /*
-        En esta función debes de leer las tareas y retornar las que tengan el estado que se
-        manda en el parametro.
-    */
+let filtrarTareasPorEstado = function (estado) {
+    let tareas = leerTareas();
+    return tareas.filter(({ status }) => status === estado);
 }
+
+module.exports = 
+{
+    leerTareas, 
+    agregarTarea, 
+    filtrarTareasPorEstado
+};
